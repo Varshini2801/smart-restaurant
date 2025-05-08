@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Analytics</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <h1>Order Analytics</h1>
+  <h3>Total Income: ₹<span id="income">0</span></h3>
+
+  <h2>Most Ordered Items and Least Ordered Items</h2>
+  <canvas id="barChart" width="400" height="200"></canvas>
+
+  <h2>Order Distribution</h2>
+  <canvas id="pieChart" width="400" height="200"></canvas>
+
+
+  <ul id="leastItems"></ul>
+
+  <script>
+    fetch('http://127.0.0.1:5000/analytics')
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById('income').innerText = data.total_income.toFixed(2);
+
+        const items = data.most_ordered.map(i => i[0]);
+        const counts = data.most_ordered.map(i => i[1]);
+
+        // Bar Chart - Most Ordered
+        new Chart(document.getElementById('barChart'), {
+          type: 'bar',
+          data: {
+            labels: items,
+            datasets: [{
+              label: 'Orders',
+              data: counts,
+              backgroundColor: 'orange'
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { display: false }
+            }
+          }
+        });
+
+        // Pie Chart - Distribution
+        new Chart(document.getElementById('pieChart'), {
+          type: 'pie',
+          data: {
+            labels: items,
+            datasets: [{
+              data: counts,
+              backgroundColor: [
+                'tomato', 'gold', 'skyblue', 'limegreen', 'violet', 'salmon', 'turquoise'
+              ]
+            }]
+          }
+        });
+
+        // Least Ordered Items (filter items with lowest count)
+        
+      });
+  </script>
+</body>
+</html>
