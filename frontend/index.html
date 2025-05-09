@@ -45,18 +45,27 @@
       renderCart();
     }
 
-    function renderCart() {
-      cartList.innerHTML = '';
-      let total = 0;
-      cart.forEach((item, index) => {
-        total += item.price;
-        const li = document.createElement('li');
-        li.innerHTML = `${item.name} - ₹${item.price} 
-          <button style="margin-left:10px;" onclick="removeFromCart(${index})">Remove</button>`;
-        cartList.appendChild(li);
-      });
-      totalSpan.innerText = total;
-    }
+function renderCart() {
+  cartList.innerHTML = '';
+  let total = 0;
+
+  cart.forEach((item, index) => {
+    total += item.price;
+    const li = document.createElement('li');
+    li.innerHTML = `${item.name} - ₹${item.price} 
+      <button style="margin-left:10px;" onclick="removeFromCart(${index})">Remove</button>`;
+    cartList.appendChild(li);
+  });
+
+  // Tax calculation
+  let taxRate = 0.05; // 5% GST
+  let subtotal = total;
+  let tax = subtotal * taxRate;
+  let grandTotal = subtotal + tax;
+
+  totalSpan.innerText = grandTotal.toFixed(2);
+}
+
 
     function placeOrder() {
       if (cart.length === 0) return alert('Cart is empty!');
