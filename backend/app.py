@@ -44,10 +44,13 @@ def analytics():
             print("Error parsing order:", order['items'], e)
 
     item_counts = Counter(all_items)
+    tax_rate = 0.05
+    tax_collected = total_income * tax_rate / (1 + tax_rate)
 
     return jsonify({
         'most_ordered': item_counts.most_common(),
-        'total_income': total_income
+        'total_income': total_income,
+        'tax_collected': tax_collected
     })
 
 if __name__ == '__main__':
