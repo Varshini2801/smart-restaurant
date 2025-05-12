@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import sqlite3
 from flask_cors import CORS
 from collections import Counter
@@ -12,12 +12,14 @@ def get_db():
     conn.row_factory = sqlite3.Row
     return conn
 
-# ✅ Home route for base URL
 @app.route('/')
-def index():
-    return '''
-        <h1>Restaurant Ordering API</h1>
-'''
+def home():
+    return render_template('index.html')
+
+@app.route('/analytics-page')
+def analytics_page():
+    return render_template('analytics.html')
+
 
 @app.route('/menu', methods=['GET'])
 def get_menu():
