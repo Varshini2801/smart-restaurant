@@ -21,7 +21,7 @@
     const totalSpan = document.getElementById('total');
     let cart = [];
 
-    fetch('http://127.0.0.1:5000/menu')
+    fetch('https://smart-restaurant-7.onrender.com')
       .then(res => res.json())
       .then(menu => {
         menu.forEach(item => {
