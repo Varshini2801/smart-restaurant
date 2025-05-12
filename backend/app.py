@@ -17,13 +17,7 @@ def get_db():
 def index():
     return '''
         <h1>Restaurant Ordering API</h1>
-        <p>Available endpoints:</p>
-        <ul>
-            <li><strong>GET</strong> /menu - Get menu items</li>
-            <li><strong>POST</strong> /order - Place a new order</li>
-            <li><strong>GET</strong> /analytics - View analytics</li>
-        </ul>
-    '''
+
 
 @app.route('/menu', methods=['GET'])
 def get_menu():
