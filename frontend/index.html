@@ -21,7 +21,7 @@
     const totalSpan = document.getElementById('total');
     let cart = [];
 
-    fetch('https://smart-restaurant-7.onrender.com')
+    fetch('https://smart-restaurant-7.onrender.com/menu')
       .then(res => res.json())
       .then(menu => {
         menu.forEach(item => {
@@ -73,7 +73,7 @@ function renderCart() {
       const items = cart.map(i => i.name);
       const total = cart.reduce((sum, i) => sum + i.price, 0);
 
-      fetch('http://127.0.0.1:5000/order', {
+      fetch('https://smart-restaurant-7.onrender.com/order', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ table_id: tableId, items, total })
