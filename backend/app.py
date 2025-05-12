@@ -5,7 +5,7 @@ from collections import Counter
 import ast
 import os
 if not os.path.exists('database.db'):
-    import init_db
+    import backend.init_db
 
 
 app = Flask(__name__)
