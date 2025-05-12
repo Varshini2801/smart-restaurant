@@ -5,14 +5,15 @@ from collections import Counter
 import ast
 import os
 if not os.path.exists('database.db'):
-    import backend.init_db
+    from backend import init_db  # this runs the DB creation
+
 
 
 app = Flask(__name__)
 CORS(app)
 
 def get_db():
-    conn = sqlite3.connect('database.db')
+    conn = sqlite3.connect('backend/database.db')
     conn.row_factory = sqlite3.Row
     return conn
 
