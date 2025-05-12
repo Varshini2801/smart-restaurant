@@ -16,74 +16,74 @@
     <button onclick="placeOrder()">Place Order</button>
   </div>
 
-  <script>
-    const menuDiv = document.getElementById('menu');
-    const cartList = document.getElementById('cart');
-    const totalSpan = document.getElementById('total');
-    let cart = [];
+<script>
+  const menuDiv = document.getElementById('menu');
+  const cartList = document.getElementById('cart');
+  const totalSpan = document.getElementById('total');
+  let cart = [];
 
-    fetch('https://smart-restaurant-7.onrender.com/menu')
-      .then(res => res.json())
-      .then(menu => {
-        menu.forEach(item => {
-          const div = document.createElement('div');
-          div.className = 'menu-item';
-          div.innerHTML = `
-            <span>${item.item} - ₹${item.price}</span>
-            <button onclick='addToCart(${JSON.stringify(item)})'>Add</button>
-          `;
-          menuDiv.appendChild(div);
-        });
+  fetch('https://smart-restaurant-7.onrender.com/menu')
+    .then(res => res.json())
+    .then(menu => {
+      menu.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'menu-item';
+        div.innerHTML = `
+          <span>${item.item} - ₹${item.price}</span>
+          <button onclick='addToCart(${JSON.stringify(item)})'>Add</button>
+        `;
+        menuDiv.appendChild(div);
       });
+    });
 
-    function addToCart(item) {
-      cart.push(item);
+  function addToCart(item) {
+    cart.push(item);
+    renderCart();
+  }
+
+  function removeFromCart(index) {
+    cart.splice(index, 1);
+    renderCart();
+  }
+
+  function renderCart() {
+    cartList.innerHTML = '';
+    let total = 0;
+
+    cart.forEach((item, index) => {
+      total += item.price;
+      const li = document.createElement('li');
+      li.innerHTML = `${item.item} - ₹${item.price} 
+        <button style="margin-left:10px;" onclick="removeFromCart(${index})">Remove</button>`;
+      cartList.appendChild(li);
+    });
+
+    // Tax calculation
+    let taxRate = 0.05; // 5% GST
+    let subtotal = total;
+    let tax = subtotal * taxRate;
+    let grandTotal = subtotal + tax;
+
+    totalSpan.innerText = grandTotal.toFixed(2);
+  }
+
+  function placeOrder() {
+    if (cart.length === 0) return alert('Cart is empty!');
+    const tableId = prompt('Enter Table Number');
+    const items = cart.map(i => i.item); // FIXED THIS LINE
+    const total = cart.reduce((sum, i) => sum + i.price, 0);
+
+    fetch('https://smart-restaurant-7.onrender.com/order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ table_id: tableId, items, total })
+    }).then(() => {
+      alert('Order placed!');
+      cart = [];
       renderCart();
-    }
+    });
+  }
+</script>
 
-    function removeFromCart(index) {
-      cart.splice(index, 1);
-      renderCart();
-    }
-
-function renderCart() {
-  cartList.innerHTML = '';
-  let total = 0;
-
-  cart.forEach((item, index) => {
-    total += item.price;
-    const li = document.createElement('li');
-    li.innerHTML = `${item.name} - ₹${item.price} 
-      <button style="margin-left:10px;" onclick="removeFromCart(${index})">Remove</button>`;
-    cartList.appendChild(li);
-  });
-
-  // Tax calculation
-  let taxRate = 0.05; // 5% GST
-  let subtotal = total;
-  let tax = subtotal * taxRate;
-  let grandTotal = subtotal + tax;
-
-  totalSpan.innerText = grandTotal.toFixed(2);
-}
-
-
-    function placeOrder() {
-      if (cart.length === 0) return alert('Cart is empty!');
-      const tableId = prompt('Enter Table Number');
-      const items = cart.map(i => i.name);
-      const total = cart.reduce((sum, i) => sum + i.price, 0);
-
-      fetch('https://smart-restaurant-7.onrender.com/order', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ table_id: tableId, items, total })
-      }).then(() => {
-        alert('Order placed!');
-        cart = [];
-        renderCart();
-      });
-    }
-  </script>
 </body>
 </html>
