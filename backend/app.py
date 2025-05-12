@@ -17,7 +17,7 @@ def get_db():
 def index():
     return '''
         <h1>Restaurant Ordering API</h1>
-
+'''
 
 @app.route('/menu', methods=['GET'])
 def get_menu():
