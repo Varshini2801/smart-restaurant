@@ -3,6 +3,10 @@ import sqlite3
 from flask_cors import CORS
 from collections import Counter
 import ast
+import os
+if not os.path.exists('database.db'):
+    import init
+
 
 app = Flask(__name__)
 CORS(app)
