@@ -4,10 +4,9 @@ from flask_cors import CORS
 from collections import Counter
 import ast
 import os
-if not os.path.exists('database.db'):
-    from backend import init_db  # this runs the DB creation
-
-
+if not os.path.exists('backend/database.db'):
+    from backend.init_db import create_tables_and_data
+    create_tables_and_data()
 
 app = Flask(__name__)
 CORS(app)
