@@ -12,6 +12,19 @@ def get_db():
     conn.row_factory = sqlite3.Row
     return conn
 
+# ✅ Home route for base URL
+@app.route('/')
+def index():
+    return '''
+        <h1>Restaurant Ordering API</h1>
+        <p>Available endpoints:</p>
+        <ul>
+            <li><strong>GET</strong> /menu - Get menu items</li>
+            <li><strong>POST</strong> /order - Place a new order</li>
+            <li><strong>GET</strong> /analytics - View analytics</li>
+        </ul>
+    '''
+
 @app.route('/menu', methods=['GET'])
 def get_menu():
     db = get_db()
