@@ -4,15 +4,20 @@ from flask_cors import CORS
 from collections import Counter
 import ast
 import os
-if not os.path.exists('backend/database.db'):
-    from backend.init_db import create_tables_and_data
+
+# Absolute path to database
+DB_PATH = os.path.join(os.path.dirname(__file__), 'database.db')
+
+# Initialize DB if it doesn't exist
+if not os.path.exists(DB_PATH):
+    from init_db import create_tables_and_data
     create_tables_and_data()
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates', static_folder='static')
 CORS(app)
 
 def get_db():
-    conn = sqlite3.connect('backend/database.db')
+    conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -23,7 +28,6 @@ def home():
 @app.route('/analytics-page')
 def analytics_page():
     return render_template('analytics.html')
-
 
 @app.route('/menu', methods=['GET'])
 def get_menu():
